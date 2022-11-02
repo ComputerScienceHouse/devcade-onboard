@@ -13,19 +13,34 @@ namespace onboard
     {
         private GraphicsDeviceManager _device;
 
+        // Synonymous with cards list from my project
+        // Will have to convert this to a list of MenuCards
         private List<string> gameTitles;
+        private List<MenuCard> cards = new List<MenuCard>();
 
         private int _sWidth;
         private int _sHeight;
+
+        private float moveTime = 0.15f; // This is the total time the scrolling animation takes
+        private float timeRemaining = 0f;
+
+        public bool movingUp;
+        public bool movingDown;
+
         public Menu(GraphicsDeviceManager graph)
         {
             _device = graph;
         }
 
-        public void updateDims() 
+        public void updateDims(GraphicsDeviceManager _graphics) 
         {
-            _sWidth = _device.GraphicsDevice.Viewport.Width;
-            _sHeight = _device.GraphicsDevice.Viewport.Height;
+            // This will be the apect ratio of the screen on the machine
+            _sWidth = 720;
+            _sHeight = 1280;
+
+            _graphics.PreferredBackBufferHeight = _sHeight;
+            _graphics.PreferredBackBufferWidth = _sWidth;
+            _graphics.ApplyChanges();
         }
 
         public void getGames() {
@@ -37,6 +52,14 @@ namespace onboard
         public void setGames(List<string> theGames)
         {
             gameTitles = theGames;
+        }
+
+        public void setCards()
+        {
+            for(int i=0; i<gameTitles.Count; i++)
+            {
+                cards.Add(new MenuCard(i*-1,gameTitles[i]));
+            }
         }
 
         public int gamesLen()
@@ -53,7 +76,7 @@ namespace onboard
         {
             string welcome = "Welcome to Devcade";
             Vector2 welcomeSize = font.MeasureString(welcome);
-            _spriteBatch.DrawString(font, welcome, new Vector2(_sWidth / 2 - welcomeSize.X / 2, _sHeight / 5 - welcomeSize.Y), Color.White);
+            _spriteBatch.DrawString(font, welcome, new Vector2(_sWidth / 2 - welcomeSize.X / 2, _sHeight / 5 - welcomeSize.Y), Color.Black);
                          
 
             string wares = "Come enjoy our wares";
@@ -114,6 +137,109 @@ namespace onboard
                 _spriteBatch.DrawString(font, gameTitle, new Vector2(_sWidth / 2 - gameTitleSize.X / 2, ((_sHeight / 5) + (_sHeight / 10)) + ((_sHeight / 10) * index)), Color.White);
                 index++;
             }    */
+        }
+
+        public void drawCards(SpriteBatch _spriteBatch, Texture2D cardTexture, SpriteFont font)
+        {
+            // I still have no idea why the layerDepth does not work
+            foreach(MenuCard card in cards)
+            {
+                if(Math.Abs(card.listPos) == 4)
+                {
+                   card.DrawSelf(_spriteBatch, cardTexture, font, _sHeight);
+                }
+                
+            }
+            foreach(MenuCard card in cards)
+            {
+                if(Math.Abs(card.listPos) == 3)
+                {
+                   card.DrawSelf(_spriteBatch, cardTexture, font, _sHeight);
+                }
+                
+            }
+            foreach(MenuCard card in cards)
+            {
+                if(Math.Abs(card.listPos) == 2)
+                {
+                   card.DrawSelf(_spriteBatch, cardTexture, font, _sHeight);
+                }
+                
+            }
+            foreach(MenuCard card in cards)
+            {
+                if(Math.Abs(card.listPos) == 1)
+                {
+                   card.DrawSelf(_spriteBatch, cardTexture, font, _sHeight);
+                }
+                
+            }
+            foreach(MenuCard card in cards)
+            {
+                if(Math.Abs(card.listPos) == 0)
+                {
+                   card.DrawSelf(_spriteBatch, cardTexture, font, _sHeight);
+                }
+                
+            }
+        }
+
+        public void beginAnimUp()
+        {
+            if (!(movingUp || movingDown))
+                {
+                    foreach(MenuCard card in cards)
+                    {
+                        card.listPos++;
+                        //card.layer = (float)Math.Abs(card.listPos) / 4;
+                    }
+                    timeRemaining = moveTime; // Time remaining in the animation begins at the total expected move time
+                    movingUp = true;
+                }
+        }
+
+        public void beginAnimDown()
+        {
+            if (!(movingDown || movingUp))
+                {
+                    foreach (MenuCard card in cards)
+                    {
+                        card.listPos--;
+                        //card.layer = (float)Math.Abs(card.listPos) / 4;
+                    }
+                    timeRemaining = moveTime; // Time remaining in the animation begins at the total expected move time
+                    movingDown = true;
+                }
+        }
+
+        public void animate(GameTime gameTime)
+        {
+            if (timeRemaining > 0) // Continues to execute the following code as long as the animation is playing AND max time isn't reached
+            {
+                if(movingUp)
+                {
+                    foreach(MenuCard card in cards)
+                    {
+                        card.moveUp((float)gameTime.ElapsedGameTime.TotalSeconds);
+                    }
+                }
+
+                else if(movingDown)
+                {
+                    foreach(MenuCard card in cards)
+                    {
+                        card.moveDown((float)gameTime.ElapsedGameTime.TotalSeconds);
+                    }
+                }
+
+                timeRemaining -= (float)gameTime.ElapsedGameTime.TotalSeconds; // Decrement time until it reaches zero
+            }
+
+            else // Once timeleft reaches 0, finish anim. 
+            {
+                movingUp = false;
+                movingDown = false;
+            }
         }
     }
 }
