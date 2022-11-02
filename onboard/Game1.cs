@@ -23,6 +23,7 @@ namespace onboard
         KeyboardState lastState;
 
         private Texture2D cardTexture;
+        private Texture2D[] loadingFrames = new Texture2D[25];
 
 
         public Game1()
@@ -56,6 +57,12 @@ namespace onboard
             // TODO: use this.Content to load your game content here
             _mainMenu.setGames(_client.ListBucketContentsAsync("devcade-games").Result);
             _mainMenu.setCards();
+
+            for(int i=1; i<26; i++)
+            {
+                string name = "Loading_" + i.ToString();
+                loadingFrames[i-1] = Content.Load<Texture2D>(name);
+            }
         }
 
         protected override void Update(GameTime gameTime)
@@ -103,22 +110,25 @@ namespace onboard
 
         protected override void Draw(GameTime gameTime)
         {
-            GraphicsDevice.Clear(Color.White);
-
-            // TODO: Add your drawing code here
-
             _spriteBatch.Begin();
-
-            //int maxItems = 5;
-            _mainMenu.drawTitle(_devcadeMenuBig, _spriteBatch);
-            //_mainMenu.drawGames(_devcadeMenuBig, _spriteBatch, _itemSelected, maxItems);
-            //_mainMenu.drawSelection(_spriteBatch, _itemSelected % maxItems);
-            _mainMenu.drawGameCount(_devcadeMenuBig, _spriteBatch, _itemSelected + 1, _mainMenu.gamesLen());
-            _mainMenu.drawCards(_spriteBatch, cardTexture, _devcadeMenuBig);
-
-            if (_loading)
+            
+            if (!_loading)
             {
-               _mainMenu.drawLoading(_devcadeMenuBig, _spriteBatch);
+                GraphicsDevice.Clear(Color.White);
+
+                // TODO: Add your drawing code here
+
+                //int maxItems = 5;
+                _mainMenu.drawTitle(_devcadeMenuBig, _spriteBatch);
+                //_mainMenu.drawGames(_devcadeMenuBig, _spriteBatch, _itemSelected, maxItems);
+                //_mainMenu.drawSelection(_spriteBatch, _itemSelected % maxItems);
+                _mainMenu.drawGameCount(_devcadeMenuBig, _spriteBatch, _itemSelected + 1, _mainMenu.gamesLen());
+                _mainMenu.drawCards(_spriteBatch, cardTexture, _devcadeMenuBig);
+            }
+            else
+            {
+                GraphicsDevice.Clear(Color.Black);
+               _mainMenu.drawLoading(_devcadeMenuBig, _spriteBatch, loadingFrames);
             }
 
             _spriteBatch.End();
