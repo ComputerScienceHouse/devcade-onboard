@@ -17,6 +17,7 @@ namespace onboard
         // Will have to convert this to a list of MenuCards
         private List<string> gameTitles;
         private List<MenuCard> cards = new List<MenuCard>();
+        private int loadingFrame = 0;
 
         private int _sWidth;
         private int _sHeight;
@@ -84,20 +85,22 @@ namespace onboard
             _spriteBatch.DrawString(font, wares, new Vector2(_sWidth / 2 + welcomeSize.X / 8, (_sHeight / 4.2f)), Color.Yellow, -0.3f, new Vector2(0, 0), new Vector2(0.5f, 0.5f), SpriteEffects.None, 1);
         }
 
-        public void drawLoading(SpriteFont font, SpriteBatch _spriteBatch)
+        public void drawLoading(SpriteFont font, SpriteBatch _spriteBatch, Texture2D[] loadingFrames)
         {
-            RectangleSprite.FillRectangle(_spriteBatch, new Rectangle(
-                    _sWidth / 2 - 100,
-                    _sHeight / 2 - 100,
-                    500,
-                    200
-                ),
-                Color.Black);
+            // Cycles through all the frames of the loading animation. 
+            // At 60 fps this goes way too fast, find a way to fix that
+            if(loadingFrame > 24)
+            {
+                loadingFrame = 0;
+            }
 
+            _spriteBatch.Draw(
+                loadingFrames[loadingFrame],
+                new Rectangle(60,0, 536, _sHeight),
+                Color.White
+            );
 
-            string loading = "LOADING...";
-            Vector2 loadingSize = font.MeasureString(loading);
-            _spriteBatch.DrawString(font, loading, new Vector2(_sWidth / 2 - loadingSize.X / 2, _sHeight / 2 - loadingSize.Y), Color.White, 0.0f, new Vector2(0, 0), new Vector2(2.5f, 2.5f), SpriteEffects.None, 1);
+            loadingFrame++;
         }
 
         public void drawSelection(SpriteBatch _spriteBatch, int menuItemSelected)
