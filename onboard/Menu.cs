@@ -80,8 +80,20 @@ namespace onboard
             return gameTitles.ElementAt(at);
         }
 
-        public void drawTitle(SpriteFont font, SpriteBatch _spriteBatch)
+        public void drawTitle(SpriteBatch _spriteBatch, Texture2D titleTexture)
         {
+            _spriteBatch.Draw(
+                titleTexture,
+                new Vector2(0,60),
+                null,
+                Color.White,
+                0f,
+                new Vector2(0,0),
+                0.6f,
+                SpriteEffects.None,
+                0f
+            );
+            /*
             string welcome = "Welcome to Devcade";
             Vector2 welcomeSize = font.MeasureString(welcome);
             _spriteBatch.DrawString(font, welcome, new Vector2(_sWidth / 2 - welcomeSize.X / 2, _sHeight / 5 - welcomeSize.Y), Color.Black);
@@ -90,6 +102,7 @@ namespace onboard
             string wares = "Come enjoy our wares";
             Vector2 waresSize = font.MeasureString(wares);
             _spriteBatch.DrawString(font, wares, new Vector2(_sWidth / 2 + welcomeSize.X / 8, (_sHeight / 4.2f)), Color.Yellow, -0.3f, new Vector2(0, 0), new Vector2(0.5f, 0.5f), SpriteEffects.None, 1);
+            */
         }
 
         public void drawLoading(SpriteBatch _spriteBatch, Texture2D[] loadingFrames, GameTime gameTime)
