@@ -17,7 +17,13 @@ namespace onboard
         // Will have to convert this to a list of MenuCards
         private List<string> gameTitles;
         private List<MenuCard> cards = new List<MenuCard>();
+        
+        private const float fadeTime = 1f; // Time it takes to make the loading animation fade in 
+        private float alpha = 0f;
+        private const float fadeSpeed = 255.0f / fadeTime;
+
         private int loadingFrame = 0;
+        private int previousFrame = 0;
 
         private int _sWidth;
         private int _sHeight;
@@ -85,10 +91,10 @@ namespace onboard
             _spriteBatch.DrawString(font, wares, new Vector2(_sWidth / 2 + welcomeSize.X / 8, (_sHeight / 4.2f)), Color.Yellow, -0.3f, new Vector2(0, 0), new Vector2(0.5f, 0.5f), SpriteEffects.None, 1);
         }
 
-        public void drawLoading(SpriteFont font, SpriteBatch _spriteBatch, Texture2D[] loadingFrames)
+        public void drawLoading(SpriteBatch _spriteBatch, Texture2D[] loadingFrames, GameTime gameTime)
         {
+
             // Cycles through all the frames of the loading animation. 
-            // At 60 fps this goes way too fast, find a way to fix that
             if(loadingFrame > 24)
             {
                 loadingFrame = 0;
@@ -97,10 +103,23 @@ namespace onboard
             _spriteBatch.Draw(
                 loadingFrames[loadingFrame],
                 new Rectangle(60,0, 536, _sHeight),
-                Color.White
+                new Color(255,255,255, alpha)
             );
 
-            loadingFrame++;
+            if(previousFrame == loadingFrame)
+            {
+                loadingFrame++;
+            }
+            else
+            {
+                previousFrame = loadingFrame; // This makes each frame remain on screen for two frames, to make the animation a little slower
+            }
+            if(alpha < 255)
+            {
+                //alpha += fadeSpeed * (float)gameTime.ElapsedGameTime.TotalSeconds;
+                //Console.WriteLine(alpha.ToString());
+            }
+            
         }
 
         public void drawSelection(SpriteBatch _spriteBatch, int menuItemSelected)
@@ -223,7 +242,7 @@ namespace onboard
                 {
                     foreach(MenuCard card in cards)
                     {
-                        card.moveUp((float)gameTime.ElapsedGameTime.TotalSeconds);
+                        card.moveUp(gameTime);
                     }
                 }
 
@@ -231,7 +250,7 @@ namespace onboard
                 {
                     foreach(MenuCard card in cards)
                     {
-                        card.moveDown((float)gameTime.ElapsedGameTime.TotalSeconds);
+                        card.moveDown(gameTime);
                     }
                 }
 
