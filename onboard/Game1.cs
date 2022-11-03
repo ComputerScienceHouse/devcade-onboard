@@ -67,7 +67,7 @@ namespace onboard
 
         protected override void Update(GameTime gameTime)
         {
-            if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
+            if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Tab))
                 Exit();
                 
             // TODO: Add your update logic here
@@ -128,7 +128,7 @@ namespace onboard
             else
             {
                 GraphicsDevice.Clear(Color.Black);
-               _mainMenu.drawLoading(_devcadeMenuBig, _spriteBatch, loadingFrames);
+               _mainMenu.drawLoading(_spriteBatch, loadingFrames, gameTime);
             }
 
             _spriteBatch.End();

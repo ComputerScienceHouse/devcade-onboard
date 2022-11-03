@@ -64,36 +64,36 @@ namespace onboard
 
         }
 
-        public void moveUp(float elapsed)
+        public void moveUp(GameTime gameTime)
         {
             // The card scales down moving away from the center, otherwise it scales up as it approaches the center 
             if (listPos > 0)
             {
-                scaleDown(elapsed);
+                scaleDown((float)gameTime.ElapsedGameTime.TotalSeconds);
                 
             }
             else
             {
-                scaleUp(elapsed);
+                scaleUp((float)gameTime.ElapsedGameTime.TotalSeconds);
             }
 
-            rotation -= rotationSpeed * elapsed; // To rotate counter clockwise (aka up), decrease angle
+            rotation -= rotationSpeed * (float)gameTime.ElapsedGameTime.TotalSeconds; // To rotate counter clockwise (aka up), decrease angle
         }
 
-        public void moveDown(float elapsed)
+        public void moveDown(GameTime gameTime)
         {
             // The card scales down moving away from the center, otherwise it scales up as it approaches the center 
             if (listPos >= 0)
             {
-                scaleUp(elapsed);
+                scaleUp((float)gameTime.ElapsedGameTime.TotalSeconds);
 
             }
             else
             {
-                scaleDown(elapsed);
+                scaleDown((float)gameTime.ElapsedGameTime.TotalSeconds);
             }
 
-            rotation += rotationSpeed * elapsed; // To rotate counter counterclockwise (aka down), decrease angle
+            rotation += rotationSpeed * (float)gameTime.ElapsedGameTime.TotalSeconds; // To rotate counter counterclockwise (aka down), decrease angle
         }
 
         private void scaleDown(float elapsed)
