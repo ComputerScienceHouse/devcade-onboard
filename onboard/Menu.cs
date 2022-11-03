@@ -18,9 +18,10 @@ namespace onboard
         private List<string> gameTitles;
         private List<MenuCard> cards = new List<MenuCard>();
         
-        private const float fadeTime = 1f; // Time it takes to make the loading animation fade in 
-        private float alpha = 0f;
-        private const float fadeSpeed = 255.0f / fadeTime;
+        // Trying to make the loading screen fade in when a game is selected
+        //private const float fadeTime = 1f; // Time it takes to make the loading animation fade in 
+        //private float alpha = 0f;
+        //private const float fadeSpeed = 255.0f / fadeTime;
 
         private int loadingFrame = 0;
         private int previousFrame = 0;
@@ -103,7 +104,7 @@ namespace onboard
             _spriteBatch.Draw(
                 loadingFrames[loadingFrame],
                 new Rectangle(60,0, 536, _sHeight),
-                new Color(255,255,255, alpha)
+                Color.White
             );
 
             if(previousFrame == loadingFrame)
@@ -114,11 +115,11 @@ namespace onboard
             {
                 previousFrame = loadingFrame; // This makes each frame remain on screen for two frames, to make the animation a little slower
             }
-            if(alpha < 255)
+            /*if(alpha < 255)
             {
                 //alpha += fadeSpeed * (float)gameTime.ElapsedGameTime.TotalSeconds;
                 //Console.WriteLine(alpha.ToString());
-            }
+            }*/
             
         }
 
