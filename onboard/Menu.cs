@@ -17,6 +17,7 @@ namespace onboard
         // Will have to convert this to a list of MenuCards
         private List<string> gameTitles;
         private List<MenuCard> cards = new List<MenuCard>();
+        public int itemSelected = 0;
         
         // Trying to make the lgo and other elements animate on startup
         //private const float moveTime = 0.15f; // Time it takes to make the logo to slide in
@@ -75,9 +76,9 @@ namespace onboard
             return gameTitles.Count;
         }
 
-        public string gameAt(int at)
+        public string gameSelected()
         {
-            return gameTitles.ElementAt(at);
+            return gameTitles.ElementAt(itemSelected);
         }
 
         public void drawBackground(SpriteBatch _spriteBatch, Texture2D backgroundTexure, float col)
@@ -240,6 +241,7 @@ namespace onboard
                     }
                     timeRemaining = moveTime; // Time remaining in the animation begins at the total expected move time
                     movingUp = true;
+                    itemSelected++; // Update which game is currently selected, so the proper one will be launched
                 }
         }
 
@@ -254,6 +256,7 @@ namespace onboard
                     }
                     timeRemaining = moveTime; // Time remaining in the animation begins at the total expected move time
                     movingDown = true;
+                    itemSelected--;
                 }
         }
 
