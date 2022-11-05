@@ -24,6 +24,7 @@ namespace onboard
         public float scale = 1f;
         private static float scale_amt = 0.05f;
 
+        // So uhh, I gues for decimal values the color should actually take 0.1-1.0, not 0.0-255.0? So technically this isn't correct?
         public Color cardColor = new Color(125, 0, 0);
         private static float red_amt = 30.0f;
         private static float color_amt = 50.0f;
