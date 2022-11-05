@@ -80,20 +80,20 @@ namespace onboard
             return gameTitles.ElementAt(at);
         }
 
-        public void drawBackground(SpriteBatch _spriteBatch, Texture2D backgroundTexure)
+        public void drawBackground(SpriteBatch _spriteBatch, Texture2D backgroundTexure, float col)
         {
             _spriteBatch.Draw(
                 backgroundTexure,
                 new Rectangle(0,0, _sWidth, _sHeight),
-                Color.White
+                new Color(col,col,col)
             );
         }
 
-        public void drawTitle(SpriteBatch _spriteBatch, Texture2D titleTexture)
+        public void drawTitle(SpriteBatch _spriteBatch, Texture2D titleTexture, float Y)
         {
             _spriteBatch.Draw(
                 titleTexture,
-                new Vector2(0,60),
+                new Vector2(0,Y),
                 null,
                 Color.White,
                 0f,

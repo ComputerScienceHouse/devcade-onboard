@@ -19,9 +19,9 @@ namespace onboard
         private int _itemSelected = 0;
 
         private bool _loading = false;
-
-        private float alpha = 0f;
-        private float alphaAmount = 1f / 1f;
+        
+        private float fadeColor = 0f;
+        private float logoY = -500f;
 
         KeyboardState lastState;
 
@@ -82,10 +82,13 @@ namespace onboard
 
             KeyboardState myState = Keyboard.GetState();
 
-            if(alpha < 1)
+            if(fadeColor < 1.25f)
             {
-                alpha += alphaAmount*(float)(gameTime.ElapsedGameTime.TotalSeconds);
-                Console.WriteLine(alpha);
+                fadeColor += (float)(gameTime.ElapsedGameTime.TotalSeconds);
+            }
+            else if(logoY < 0)
+            {
+                logoY += (500f/0.5f)*(float)(gameTime.ElapsedGameTime.TotalSeconds);
             }
             
             if (lastState == null)
@@ -130,8 +133,8 @@ namespace onboard
                 // TODO: Add your drawing code here
 
                 //int maxItems = 5;
-                _mainMenu.drawBackground(_spriteBatch, backgroundTexure, new Color(alpha,alpha,alpha));
-                _mainMenu.drawTitle(_spriteBatch, titleTexture);
+                _mainMenu.drawBackground(_spriteBatch, backgroundTexure, fadeColor);
+                _mainMenu.drawTitle(_spriteBatch, titleTexture, logoY);
                 //_mainMenu.drawGames(_devcadeMenuBig, _spriteBatch, _itemSelected, maxItems);
                 //_mainMenu.drawSelection(_spriteBatch, _itemSelected % maxItems);
                 //_mainMenu.drawGameCount(_devcadeMenuBig, _spriteBatch, _itemSelected + 1, _mainMenu.gamesLen());
@@ -142,8 +145,6 @@ namespace onboard
                 GraphicsDevice.Clear(Color.Black);
                _mainMenu.drawLoading(_spriteBatch, loadingFrames, gameTime);
             }
-
-            GraphicsDevice.Clear(new Color(0,0,0,alpha));
 
             _spriteBatch.End();
 
