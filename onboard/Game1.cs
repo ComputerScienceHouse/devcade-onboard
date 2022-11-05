@@ -22,7 +22,6 @@ namespace onboard
         
         private string state = "launch";
         private float fadeColor = 0f;
-        private float logoY = -500f;
 
         KeyboardState lastState;
 
@@ -93,10 +92,6 @@ namespace onboard
                     {
                         fadeColor += (float)(gameTime.ElapsedGameTime.TotalSeconds);
                     }
-                    else if(logoY < 100)
-                    {
-                        logoY += (600f/0.5f) * (float)(gameTime.ElapsedGameTime.TotalSeconds);
-                    }
                     else 
                     {
                         // Once the animation completes, begin tracking input
@@ -150,11 +145,11 @@ namespace onboard
 
                 //int maxItems = 5;
                 _mainMenu.drawBackground(_spriteBatch, backgroundTexure, fadeColor);
-                _mainMenu.drawTitle(_spriteBatch, titleTexture, logoY);
+                _mainMenu.drawTitle(_spriteBatch, titleTexture, fadeColor);
                 //_mainMenu.drawGames(_devcadeMenuBig, _spriteBatch, _itemSelected, maxItems);
                 //_mainMenu.drawSelection(_spriteBatch, _itemSelected % maxItems);
                 //_mainMenu.drawGameCount(_devcadeMenuBig, _spriteBatch, _itemSelected + 1, _mainMenu.gamesLen());
-                _mainMenu.drawCards(_spriteBatch, cardTexture, _devcadeMenuBig);
+                //_mainMenu.drawCards(_spriteBatch, cardTexture, _devcadeMenuBig);
             }
             else
             {
