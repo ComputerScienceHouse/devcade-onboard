@@ -102,22 +102,20 @@ namespace onboard
                 // In this state, the user is able to scroll through the menu and launch games
                 // TODO: Update _itemSelected to be a part of Menu.cs
                 case "input":
-                    if (myState.IsKeyDown(Keys.Down) && lastState.IsKeyUp(Keys.Down) && _itemSelected < _mainMenu.gamesLen() - 1 && !(_mainMenu.movingDown || _mainMenu.movingUp))
+                    if (myState.IsKeyDown(Keys.Down) && lastState.IsKeyUp(Keys.Down) && _mainMenu.itemSelected < _mainMenu.gamesLen() - 1)
                     {
                         _mainMenu.beginAnimUp();
-                        _itemSelected++;
                     }
 
-                    if (myState.IsKeyDown(Keys.Up) && lastState.IsKeyUp(Keys.Up) && _itemSelected > 0 && !(_mainMenu.movingDown || _mainMenu.movingUp))
+                    if (myState.IsKeyDown(Keys.Up) && lastState.IsKeyUp(Keys.Up) && _mainMenu.itemSelected > 0)
                     {
                         _mainMenu.beginAnimDown();
-                        _itemSelected--;
                     }
 
                     if (myState.IsKeyDown(Keys.Enter) && lastState.IsKeyUp(Keys.Enter))
                     {
                         Console.WriteLine("Running game!!!");
-                        _client.runGame(_mainMenu.gameAt(_itemSelected));
+                        _client.runGame(_mainMenu.gameSelected());
                     }
 
                     _mainMenu.animate(gameTime);
@@ -127,7 +125,7 @@ namespace onboard
             lastState = Keyboard.GetState();
 
             // Check for process that matches last launched game and display loading screen if it's running
-            _loading = Util.IsProcessOpen(_mainMenu.gameAt(_itemSelected));
+            _loading = Util.IsProcessOpen(_mainMenu.gameSelected());
 
             base.Update(gameTime);
         }
@@ -149,7 +147,7 @@ namespace onboard
                 //_mainMenu.drawGames(_devcadeMenuBig, _spriteBatch, _itemSelected, maxItems);
                 //_mainMenu.drawSelection(_spriteBatch, _itemSelected % maxItems);
                 //_mainMenu.drawGameCount(_devcadeMenuBig, _spriteBatch, _itemSelected + 1, _mainMenu.gamesLen());
-                //_mainMenu.drawCards(_spriteBatch, cardTexture, _devcadeMenuBig);
+                _mainMenu.drawCards(_spriteBatch, cardTexture, _devcadeMenuBig);
             }
             else
             {
