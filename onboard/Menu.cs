@@ -43,8 +43,8 @@ namespace onboard
         public void updateDims(GraphicsDeviceManager _graphics) 
         {
             // This will be the apect ratio of the screen on the machine
-            _sWidth = 720;
-            _sHeight = 1280;
+            _sWidth = 1080;
+            _sHeight = 1920;
 
             _graphics.PreferredBackBufferHeight = _sHeight;
             _graphics.PreferredBackBufferWidth = _sWidth;
@@ -93,12 +93,12 @@ namespace onboard
         {
             _spriteBatch.Draw(
                 titleTexture,
-                new Vector2(0,Y),
+                new Vector2(_sWidth / 2,Y),
                 null,
                 Color.White,
                 0f,
-                new Vector2(0,0),
-                0.6f,
+                new Vector2(_sWidth / 2,0),
+                1f,
                 SpriteEffects.None,
                 0f
             );
