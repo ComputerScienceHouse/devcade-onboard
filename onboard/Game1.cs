@@ -20,11 +20,15 @@ namespace onboard
 
         private bool _loading = false;
 
+        private float alpha = 0f;
+        private float alphaAmount = 1f / 1f;
+
         KeyboardState lastState;
 
         private Texture2D cardTexture;
         private Texture2D[] loadingFrames = new Texture2D[25];
         private Texture2D titleTexture;
+        private Texture2D backgroundTexure;
 
 
         public Game1()
@@ -54,7 +58,8 @@ namespace onboard
             _spriteBatch = new SpriteBatch(GraphicsDevice);
             _devcadeMenuBig = Content.Load<SpriteFont>("devcade-menu-big");
             cardTexture = Content.Load<Texture2D>("card");
-            titleTexture = Content.Load<Texture2D>("devcadelogo");
+            titleTexture = Content.Load<Texture2D>("tansparent-logo");
+            backgroundTexure = Content.Load<Texture2D>("background");
 
             // TODO: use this.Content to load your game content here
             _mainMenu.setGames(_client.ListBucketContentsAsync("devcade-games").Result);
@@ -72,12 +77,16 @@ namespace onboard
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Tab))
                 Exit();
                 
-            // TODO: Add your update logic here
-            
-
+            // TODO: Update _itemSelected to be a part of Menu.cs
             // Keyboard control code
 
             KeyboardState myState = Keyboard.GetState();
+
+            if(alpha < 1)
+            {
+                alpha += alphaAmount*(float)(gameTime.ElapsedGameTime.TotalSeconds);
+                Console.WriteLine(alpha);
+            }
             
             if (lastState == null)
                 lastState = Keyboard.GetState(); // god i hate video games
@@ -116,22 +125,25 @@ namespace onboard
             
             if (!_loading)
             {
-                GraphicsDevice.Clear(Color.White);
+                GraphicsDevice.Clear(Color.Black);
 
                 // TODO: Add your drawing code here
 
                 //int maxItems = 5;
+                _mainMenu.drawBackground(_spriteBatch, backgroundTexure, new Color(alpha,alpha,alpha));
                 _mainMenu.drawTitle(_spriteBatch, titleTexture);
                 //_mainMenu.drawGames(_devcadeMenuBig, _spriteBatch, _itemSelected, maxItems);
                 //_mainMenu.drawSelection(_spriteBatch, _itemSelected % maxItems);
                 //_mainMenu.drawGameCount(_devcadeMenuBig, _spriteBatch, _itemSelected + 1, _mainMenu.gamesLen());
-                _mainMenu.drawCards(_spriteBatch, cardTexture, _devcadeMenuBig);
+                //_mainMenu.drawCards(_spriteBatch, cardTexture, _devcadeMenuBig);
             }
             else
             {
                 GraphicsDevice.Clear(Color.Black);
                _mainMenu.drawLoading(_spriteBatch, loadingFrames, gameTime);
             }
+
+            GraphicsDevice.Clear(new Color(0,0,0,alpha));
 
             _spriteBatch.End();
 
