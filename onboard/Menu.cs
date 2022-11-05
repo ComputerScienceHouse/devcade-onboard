@@ -89,13 +89,13 @@ namespace onboard
             );
         }
 
-        public void drawTitle(SpriteBatch _spriteBatch, Texture2D titleTexture, float Y)
+        public void drawTitle(SpriteBatch _spriteBatch, Texture2D titleTexture, float col)
         {
             _spriteBatch.Draw(
                 titleTexture,
-                new Vector2(_sWidth / 2,Y),
+                new Vector2(_sWidth / 2,100),
                 null,
-                Color.White,
+                new Color(col,col,col),
                 0f,
                 new Vector2(_sWidth / 2,0),
                 1f,
