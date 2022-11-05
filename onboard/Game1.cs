@@ -20,6 +20,7 @@ namespace onboard
 
         private bool _loading = false;
         
+        private string state = "launch";
         private float fadeColor = 0f;
         private float logoY = -500f;
 
@@ -76,43 +77,57 @@ namespace onboard
         {
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Tab))
                 Exit();
-                
-            // TODO: Update _itemSelected to be a part of Menu.cs
+
             // Keyboard control code
 
             KeyboardState myState = Keyboard.GetState();
 
-            if(fadeColor < 1.25f)
-            {
-                fadeColor += (float)(gameTime.ElapsedGameTime.TotalSeconds);
-            }
-            else if(logoY < 0)
-            {
-                logoY += (500f/0.5f)*(float)(gameTime.ElapsedGameTime.TotalSeconds);
-            }
-            
             if (lastState == null)
                 lastState = Keyboard.GetState(); // god i hate video games
 
-            if (myState.IsKeyDown(Keys.Down) && lastState.IsKeyUp(Keys.Down) && _itemSelected < _mainMenu.gamesLen() - 1 && !(_mainMenu.movingDown || _mainMenu.movingUp))
+            switch(state)
             {
-                _mainMenu.beginAnimUp();
-                _itemSelected++;
-            }
+                // When the service launches, it will fade in and play an animation
+                case "launch":
+                    if(fadeColor < 1f)
+                    {
+                        fadeColor += (float)(gameTime.ElapsedGameTime.TotalSeconds);
+                    }
+                    else if(logoY < 100)
+                    {
+                        logoY += (600f/0.5f) * (float)(gameTime.ElapsedGameTime.TotalSeconds);
+                    }
+                    else 
+                    {
+                        // Once the animation completes, begin tracking input
+                        goto case "input";
+                    }
+                    break;
 
-            if (myState.IsKeyDown(Keys.Up) && lastState.IsKeyUp(Keys.Up) && _itemSelected > 0 && !(_mainMenu.movingDown || _mainMenu.movingUp))
-            {
-                _mainMenu.beginAnimDown();
-                _itemSelected--;
-            }
+                // In this state, the user is able to scroll through the menu and launch games
+                // TODO: Update _itemSelected to be a part of Menu.cs
+                case "input":
+                    if (myState.IsKeyDown(Keys.Down) && lastState.IsKeyUp(Keys.Down) && _itemSelected < _mainMenu.gamesLen() - 1 && !(_mainMenu.movingDown || _mainMenu.movingUp))
+                    {
+                        _mainMenu.beginAnimUp();
+                        _itemSelected++;
+                    }
 
-            if (myState.IsKeyDown(Keys.Enter) && lastState.IsKeyUp(Keys.Enter))
-            {
-                Console.WriteLine("Running game!!!");
-                _client.runGame(_mainMenu.gameAt(_itemSelected));
-            }
+                    if (myState.IsKeyDown(Keys.Up) && lastState.IsKeyUp(Keys.Up) && _itemSelected > 0 && !(_mainMenu.movingDown || _mainMenu.movingUp))
+                    {
+                        _mainMenu.beginAnimDown();
+                        _itemSelected--;
+                    }
 
-            _mainMenu.animate(gameTime);
+                    if (myState.IsKeyDown(Keys.Enter) && lastState.IsKeyUp(Keys.Enter))
+                    {
+                        Console.WriteLine("Running game!!!");
+                        _client.runGame(_mainMenu.gameAt(_itemSelected));
+                    }
+
+                    _mainMenu.animate(gameTime);
+                    break;
+            }
 
             lastState = Keyboard.GetState();
 
@@ -125,10 +140,11 @@ namespace onboard
         protected override void Draw(GameTime gameTime)
         {
             _spriteBatch.Begin();
+            GraphicsDevice.Clear(Color.Black);
             
+            // Draw the screen noramlly, until a game is launched, then play loading animation
             if (!_loading)
             {
-                GraphicsDevice.Clear(Color.Black);
 
                 // TODO: Add your drawing code here
 
@@ -138,11 +154,10 @@ namespace onboard
                 //_mainMenu.drawGames(_devcadeMenuBig, _spriteBatch, _itemSelected, maxItems);
                 //_mainMenu.drawSelection(_spriteBatch, _itemSelected % maxItems);
                 //_mainMenu.drawGameCount(_devcadeMenuBig, _spriteBatch, _itemSelected + 1, _mainMenu.gamesLen());
-                //_mainMenu.drawCards(_spriteBatch, cardTexture, _devcadeMenuBig);
+                _mainMenu.drawCards(_spriteBatch, cardTexture, _devcadeMenuBig);
             }
             else
             {
-                GraphicsDevice.Clear(Color.Black);
                _mainMenu.drawLoading(_spriteBatch, loadingFrames, gameTime);
             }
 
