@@ -140,7 +140,6 @@ namespace onboard
             {
 
                 // TODO: Add your drawing code here
-
                 //int maxItems = 5;
                 _mainMenu.drawBackground(_spriteBatch, backgroundTexure, fadeColor);
                 _mainMenu.drawTitle(_spriteBatch, titleTexture, fadeColor);
@@ -160,3 +159,5 @@ namespace onboard
         }
     }
 }
+
+// TODO: Add error handling!!!
