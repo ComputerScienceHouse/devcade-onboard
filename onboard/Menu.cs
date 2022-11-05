@@ -18,10 +18,10 @@ namespace onboard
         private List<string> gameTitles;
         private List<MenuCard> cards = new List<MenuCard>();
         
-        // Trying to make the loading screen fade in when a game is selected
-        //private const float fadeTime = 1f; // Time it takes to make the loading animation fade in 
+        // Trying to make the lgo and other elements animate on startup
+        //private const float moveTime = 0.15f; // Time it takes to make the logo to slide in
         //private float alpha = 0f;
-        //private const float fadeSpeed = 255.0f / fadeTime;
+        //private const float moveSpeed = 255.0f / fadeTime;
 
         private int loadingFrame = 0;
         private int previousFrame = 0;
@@ -78,6 +78,15 @@ namespace onboard
         public string gameAt(int at)
         {
             return gameTitles.ElementAt(at);
+        }
+
+        public void drawBackground(SpriteBatch _spriteBatch, Texture2D backgroundTexure)
+        {
+            _spriteBatch.Draw(
+                backgroundTexure,
+                new Rectangle(0,0, _sWidth, _sHeight),
+                Color.White
+            );
         }
 
         public void drawTitle(SpriteBatch _spriteBatch, Texture2D titleTexture)
