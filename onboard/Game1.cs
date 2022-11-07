@@ -86,7 +86,7 @@ namespace onboard
 
             switch(state)
             {
-                // When the service launches, it will fade in and play an animation
+                // Fade in when the app launches
                 case "launch":
                     if(fadeColor < 1f)
                     {
@@ -114,19 +114,35 @@ namespace onboard
 
                     if (myState.IsKeyDown(Keys.Enter) && lastState.IsKeyUp(Keys.Enter))
                     {
-                        Console.WriteLine("Running game!!!");
-                        _client.runGame(_mainMenu.gameSelected());
-                    }
+                        //Console.WriteLine("Running game!!!");
+                        //_client.runGame(_mainMenu.gameSelected());
 
+                        fadeColor = 0f;
+                        _loading = true;
+                        goto case "loading";
+                    }
                     _mainMenu.animate(gameTime);
                     break;
+
+                case "loading":
+                    // Check for process that matches last launched game and display loading screen if it's running 
+                    //_loading = Util.IsProcessOpen(_mainMenu.gameSelected());
+                    
+                    if(fadeColor < 1f)
+                    {
+                        fadeColor += (float)(gameTime.ElapsedGameTime.TotalSeconds);
+                    }
+
+                    if(!_loading)
+                    {
+                        goto case "input";
+                    }
+                    
+                    break;
+  
             }
 
             lastState = Keyboard.GetState();
-
-            // Check for process that matches last launched game and display loading screen if it's running
-            _loading = Util.IsProcessOpen(_mainMenu.gameSelected());
-
             base.Update(gameTime);
         }
 
@@ -150,7 +166,7 @@ namespace onboard
             }
             else
             {
-               _mainMenu.drawLoading(_spriteBatch, loadingFrames, gameTime);
+               _mainMenu.drawLoading(_spriteBatch, loadingFrames, fadeColor);
             }
 
             _spriteBatch.End();
