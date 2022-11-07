@@ -25,7 +25,6 @@ namespace onboard
         //private const float moveSpeed = 255.0f / fadeTime;
 
         private int loadingFrame = 0;
-        private int previousFrame = 0;
 
         private int _sWidth;
         private int _sHeight;
@@ -115,34 +114,27 @@ namespace onboard
             */
         }
 
-        public void drawLoading(SpriteBatch _spriteBatch, Texture2D[] loadingFrames, GameTime gameTime)
+        public void drawLoading(SpriteBatch _spriteBatch, Texture2D[] loadingFrames, float col)
         {
 
             // Cycles through all the frames of the loading animation. 
-            if(loadingFrame > 24)
+            if(loadingFrame > 48)
             {
                 loadingFrame = 0;
             }
 
             _spriteBatch.Draw(
-                loadingFrames[loadingFrame],
-                new Rectangle(60,0, 536, _sHeight),
-                Color.White
+                loadingFrames[loadingFrame/2], // Divide it by two, so that each image remains for 2 frames, to make the animation slower
+                new Rectangle(_sWidth/2, 0, 804, 1920),
+                null,
+                new Color(col, col, col),
+                0f,
+                new Vector2(loadingFrames[loadingFrame/2].Width/2, 0),
+                SpriteEffects.None,
+                0f
             );
 
-            if(previousFrame == loadingFrame)
-            {
-                loadingFrame++;
-            }
-            else
-            {
-                previousFrame = loadingFrame; // This makes each frame remain on screen for two frames, to make the animation a little slower
-            }
-            /*if(alpha < 255)
-            {
-                //alpha += fadeSpeed * (float)gameTime.ElapsedGameTime.TotalSeconds;
-                //Console.WriteLine(alpha.ToString());
-            }*/
+            loadingFrame++;
             
         }
 
