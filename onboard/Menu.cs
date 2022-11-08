@@ -25,6 +25,7 @@ namespace onboard
         //private const float moveSpeed = 255.0f / fadeTime;
 
         private int loadingFrame = 0;
+        private int bgFrame = 0;
 
         private int _sWidth;
         private int _sHeight;
@@ -80,17 +81,25 @@ namespace onboard
             return gameTitles.ElementAt(itemSelected);
         }
 
-        public void drawBackground(SpriteBatch _spriteBatch, Texture2D backgroundTexure, float col)
+        public void drawBackground(SpriteBatch _spriteBatch, Texture2D[] BGFrames, float col)
         {
+            if(bgFrame > 158)
+            {
+                bgFrame = 0;
+            }
+
             _spriteBatch.Draw(
-                backgroundTexure,
+                BGFrames[bgFrame/2],
                 new Rectangle(0,0, _sWidth, _sHeight),
                 new Color(col,col,col)
             );
+            
+            bgFrame++;
         }
 
         public void drawTitle(SpriteBatch _spriteBatch, Texture2D titleTexture, float col)
         {
+
             _spriteBatch.Draw(
                 titleTexture,
                 new Vector2(_sWidth / 2,100),
