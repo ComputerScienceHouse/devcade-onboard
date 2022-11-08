@@ -25,6 +25,7 @@ namespace onboard
 
         private Texture2D cardTexture;
         private Texture2D[] loadingFrames = new Texture2D[25];
+        private Texture2D[] BGFrames = new Texture2D[80];
         private Texture2D titleTexture;
         private Texture2D backgroundTexure;
 
@@ -66,6 +67,13 @@ namespace onboard
             {
                 string name = "Loading_" + i.ToString();
                 loadingFrames[i-1] = Content.Load<Texture2D>(name);
+            }
+
+            for(int i=1; i<81; i++)
+            {
+                Console.WriteLine(i);
+                string name = "BG" + i.ToString();
+                BGFrames[i-1] = Content.Load<Texture2D>(name);
             }
         }
 
@@ -154,12 +162,12 @@ namespace onboard
 
                 // TODO: Add your drawing code here
                 //int maxItems = 5;
-                _mainMenu.drawBackground(_spriteBatch, backgroundTexure, fadeColor);
+                _mainMenu.drawBackground(_spriteBatch, BGFrames, fadeColor);
                 _mainMenu.drawTitle(_spriteBatch, titleTexture, fadeColor);
                 //_mainMenu.drawGames(_devcadeMenuBig, _spriteBatch, _itemSelected, maxItems);
                 //_mainMenu.drawSelection(_spriteBatch, _itemSelected % maxItems);
                 //_mainMenu.drawGameCount(_devcadeMenuBig, _spriteBatch, _itemSelected + 1, _mainMenu.gamesLen());
-                _mainMenu.drawCards(_spriteBatch, cardTexture, _devcadeMenuBig);
+                //_mainMenu.drawCards(_spriteBatch, cardTexture, _devcadeMenuBig);
             }
             else
             {
