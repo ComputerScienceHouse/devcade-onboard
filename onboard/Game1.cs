@@ -16,8 +16,6 @@ namespace onboard
         private Menu _mainMenu;
         private DevcadeClient _client;
 
-        private int _itemSelected = 0;
-
         private bool _loading = false;
         
         private string state = "launch";
@@ -29,7 +27,6 @@ namespace onboard
         private Texture2D[] loadingFrames = new Texture2D[25];
         private Texture2D titleTexture;
         private Texture2D backgroundTexure;
-
 
         public Game1()
         {
@@ -78,12 +75,12 @@ namespace onboard
                 Exit();
 
             // Keyboard control code
-
             KeyboardState myState = Keyboard.GetState();
 
             if (lastState == null)
                 lastState = Keyboard.GetState(); // god i hate video games
 
+            // If the state is loading, it is still taking input as though it is in the input state..?
             switch(state)
             {
                 // Fade in when the app launches
@@ -95,12 +92,29 @@ namespace onboard
                     else 
                     {
                         // Once the animation completes, begin tracking input
-                        goto case "input";
+                        state = "input";
                     }
+
                     break;
 
+                case "loading":
+                    // Check for process that matches last launched game and display loading screen if it's running 
+                    //_loading = Util.IsProcessOpen(_mainMenu.gameSelected());
+                    
+                    if(fadeColor < 1f)
+                    {
+                        fadeColor += (float)(gameTime.ElapsedGameTime.TotalSeconds);
+                    } 
+                    
+                    if(!_loading)
+                    {
+                        fadeColor = 0f;
+                        state = "launch";
+                    }
+                    break;
+                
                 // In this state, the user is able to scroll through the menu and launch games
-                // TODO: Update _itemSelected to be a part of Menu.cs
+                // TODO: Update _itemSelected  and top/bottom of list check to be a part of Menu.cs
                 case "input":
                     if (myState.IsKeyDown(Keys.Down) && lastState.IsKeyUp(Keys.Down) && _mainMenu.itemSelected < _mainMenu.gamesLen() - 1)
                     {
@@ -118,28 +132,11 @@ namespace onboard
                         //_client.runGame(_mainMenu.gameSelected());
 
                         fadeColor = 0f;
-                        _loading = true;
-                        goto case "loading";
+                        _loading = !_loading;
+                        state = "loading";
                     }
                     _mainMenu.animate(gameTime);
                     break;
-
-                case "loading":
-                    // Check for process that matches last launched game and display loading screen if it's running 
-                    //_loading = Util.IsProcessOpen(_mainMenu.gameSelected());
-                    
-                    if(fadeColor < 1f)
-                    {
-                        fadeColor += (float)(gameTime.ElapsedGameTime.TotalSeconds);
-                    }
-
-                    if(!_loading)
-                    {
-                        goto case "input";
-                    }
-                    
-                    break;
-  
             }
 
             lastState = Keyboard.GetState();
@@ -151,7 +148,7 @@ namespace onboard
             _spriteBatch.Begin();
             GraphicsDevice.Clear(Color.Black);
             
-            // Draw the screen noramlly, until a game is launched, then play loading animation
+            // Draw the screen normally, until a game is launched, then play loading animation
             if (!_loading)
             {
 
