@@ -83,15 +83,21 @@ namespace onboard
 
         public void drawBackground(SpriteBatch _spriteBatch, Texture2D[] BGFrames, float col)
         {
-            if(bgFrame > 158)
+            if(bgFrame > 78)
             {
                 bgFrame = 0;
             }
 
             _spriteBatch.Draw(
                 BGFrames[bgFrame/2],
-                new Rectangle(0,0, _sWidth, _sHeight),
-                new Color(col,col,col)
+                new Vector2(_sWidth/2, _sHeight/2),
+                null,
+                new Color(col,col,col),
+                0f,
+                new Vector2(BGFrames[bgFrame/2].Width / 2, BGFrames[bgFrame/2].Height / 2),
+                1.05f,
+                SpriteEffects.None,
+                0f
             );
             
             bgFrame++;
