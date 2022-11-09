@@ -117,12 +117,12 @@ namespace onboard
         {
             _spriteBatch.Draw(
                 cardTexture,
-                new Vector2(0, _sHeight / 2 + cardTexture.Height / 4),
+                new Vector2(0, _sHeight / 2 + cardTexture.Height / 2),
                 null,
                 cardColor,
                 rotation,
                 new Vector2(0, cardTexture.Height / 2),
-                scale * 0.75f, // times .75 because the original card texture is way too big for 720x1280 
+                scale, 
                 SpriteEffects.None,
                 0f
                 );

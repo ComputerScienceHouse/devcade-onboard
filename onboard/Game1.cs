@@ -64,7 +64,7 @@ namespace onboard
             _mainMenu.setCards();
 
             // These for loops load each of the frames of both the loading animation and background loop.
-            // Currently, loading all these images might be a little slow for startup
+            // TURN THESE INTO SPRITESHEETS
             for(int i=1; i<26; i++)
             {
                 string name = "Loading_" + i.ToString();
@@ -137,14 +137,25 @@ namespace onboard
 
                     if (myState.IsKeyDown(Keys.Enter) && lastState.IsKeyUp(Keys.Enter))
                     {
-                        //Console.WriteLine("Running game!!!");
-                        //_client.runGame(_mainMenu.gameSelected());
-
-                        fadeColor = 0f;
-                        _loading = !_loading;
-                        state = "loading";
+                        state = "description";
                     }
                     _mainMenu.animate(gameTime);
+                    break;
+                
+                case "description":
+                    if (myState.IsKeyDown(Keys.Enter) && lastState.IsKeyUp(Keys.Enter))
+                    {
+                        //Console.WriteLine("Running game!!!");
+                        //_client.runGame(_mainMenu.gameSelected());
+                        fadeColor = 0f;
+                        _loading = true;
+                        state = "loading";
+                    }
+                    else if (myState.IsKeyDown(Keys.RightShift) && lastState.IsKeyUp(Keys.RightShift))
+                    {
+                        state = "input";
+                    }
+
                     break;
             }
 
@@ -156,24 +167,28 @@ namespace onboard
         {
             _spriteBatch.Begin();
             GraphicsDevice.Clear(Color.Black);
-            
-            // Draw the screen normally, until a game is launched, then play loading animation
-            if (!_loading)
-            {
 
-                // TODO: Add your drawing code here
-                //int maxItems = 5;
-                _mainMenu.drawBackground(_spriteBatch, BGFrames, fadeColor);
-                _mainMenu.drawTitle(_spriteBatch, titleTexture, fadeColor);
-                //_mainMenu.drawGames(_devcadeMenuBig, _spriteBatch, _itemSelected, maxItems);
-                //_mainMenu.drawSelection(_spriteBatch, _itemSelected % maxItems);
-                //_mainMenu.drawGameCount(_devcadeMenuBig, _spriteBatch, _itemSelected + 1, _mainMenu.gamesLen());
-                _mainMenu.drawCards(_spriteBatch, cardTexture, _devcadeMenuBig);
-            }
-            else
+            switch (state)
             {
-               _mainMenu.drawLoading(_spriteBatch, loadingFrames, fadeColor);
+                case "launch":
+                case "input":
+                    _mainMenu.drawBackground(_spriteBatch, BGFrames, fadeColor);
+                    _mainMenu.drawTitle(_spriteBatch, titleTexture, fadeColor);
+                    _mainMenu.drawCards(_spriteBatch, cardTexture, _devcadeMenuBig);
+                    break;
+
+                case "loading":
+                    _mainMenu.drawLoading(_spriteBatch, loadingFrames, fadeColor);
+                    break;
+                
+                case "description":
+                    _mainMenu.drawBackground(_spriteBatch,BGFrames,fadeColor);
+                    _mainMenu.drawTitle(_spriteBatch,titleTexture,fadeColor);
+                    _mainMenu.drawDescription(_spriteBatch, cardTexture, _devcadeMenuBig);
+                    break;
             }
+
+            _spriteBatch.DrawString(_devcadeMenuBig, state, new Vector2(0,0), Color.White);
 
             _spriteBatch.End();
 
