@@ -108,7 +108,7 @@ namespace onboard
 
             _spriteBatch.Draw(
                 titleTexture,
-                new Vector2(_sWidth / 2,100),
+                new Vector2(_sWidth / 2,50),
                 null,
                 new Color(col,col,col),
                 0f,
@@ -153,6 +153,7 @@ namespace onboard
             
         }
 
+        // OLD
         public void drawSelection(SpriteBatch _spriteBatch, int menuItemSelected)
         {
             int rectLength = 300;
@@ -166,11 +167,13 @@ namespace onboard
                 Color.White, 3);
         }
 
+        // OLD
         public void drawGameCount(SpriteFont font, SpriteBatch _spriteBatch, int itemSelected, int totalItems)
         {
             _spriteBatch.DrawString(font, itemSelected + " / " + totalItems, new Vector2(50, 50), Color.White);
         }
 
+        // OLD
         public void drawGames(SpriteFont font, SpriteBatch _spriteBatch, int itemSelected, int maxItems)
         {
             int startPosition = (int)(Math.Floor(itemSelected / (double)maxItems) * maxItems);
@@ -190,6 +193,33 @@ namespace onboard
                 _spriteBatch.DrawString(font, gameTitle, new Vector2(_sWidth / 2 - gameTitleSize.X / 2, ((_sHeight / 5) + (_sHeight / 10)) + ((_sHeight / 10) * index)), Color.White);
                 index++;
             }    */
+        }
+
+        public void drawDescription(SpriteBatch _spriteBatch, Texture2D descTexture, SpriteFont font)
+        {
+            Vector2 titleSize = font.MeasureString("The AWESOME Game");
+            Point descPos = new Point(_sWidth/2, _sHeight/2 + descTexture.Height/2);
+
+            _spriteBatch.Draw(descTexture, 
+                new Rectangle(descPos, new Point(900,1200)),
+                null,
+                Color.DarkRed,
+                0f,
+                new Vector2(descTexture.Width/2,descTexture.Height/2),
+                SpriteEffects.None,
+                0f
+                );
+
+            _spriteBatch.DrawString(font,
+                "The AWESOME Game",
+                new Vector2(descPos.X, descPos.Y - descTexture.Height),
+                Color.White,
+                0f,
+                new Vector2(titleSize.X/2,titleSize.Y/2),
+                1f,
+                SpriteEffects.None,
+                0f
+            );
         }
 
         public void drawCards(SpriteBatch _spriteBatch, Texture2D cardTexture, SpriteFont font)
