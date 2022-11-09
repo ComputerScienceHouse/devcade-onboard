@@ -64,19 +64,17 @@ namespace onboard
             _mainMenu.setCards();
 
             // These for loops load each of the frames of both the loading animation and background loop.
-            // Currently, loading 100+ images at once is a little slow for startup 
-                // Using every other frame for bg loop is better, do that instead.
-                // Don't forget to actually remove those extra frames from the Content folder instead of skipping them in the for loop
+            // Currently, loading all these images might be a little slow for startup
             for(int i=1; i<26; i++)
             {
                 string name = "Loading_" + i.ToString();
                 loadingFrames[i-1] = Content.Load<Texture2D>(name);
             }
 
-            for(int i=1; i<81; i+=2)
+            for(int i=1; i<41; i++)
             {
                 string name = "BG" + i.ToString();
-                BGFrames[(i-1)/2] = Content.Load<Texture2D>(name);
+                BGFrames[i-1] = Content.Load<Texture2D>(name);
             }
         }
 
