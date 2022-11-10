@@ -195,27 +195,40 @@ namespace onboard
             }    */
         }
 
-        public void drawDescription(SpriteBatch _spriteBatch, Texture2D descTexture, SpriteFont font)
+        public void drawDescription(SpriteBatch _spriteBatch, Texture2D descTexture, SpriteFont titleFont, SpriteFont descFont)
         {
-            Vector2 titleSize = font.MeasureString("The AWESOME Game");
-            Point descPos = new Point(_sWidth/2, _sHeight/2 + descTexture.Height/2);
+            Vector2 titleSize = titleFont.MeasureString("Meatball Mania");
+            Vector2 descSize = descFont.MeasureString("What's up, check out this cool game");
+            Vector2 descPos = new Vector2(_sWidth/2, _sHeight/2 + descTexture.Height/6);
 
             _spriteBatch.Draw(descTexture, 
-                new Rectangle(descPos, new Point(900,1200)),
+                descPos,
                 null,
                 Color.DarkRed,
                 0f,
                 new Vector2(descTexture.Width/2,descTexture.Height/2),
+                1f,
                 SpriteEffects.None,
                 0f
                 );
 
-            _spriteBatch.DrawString(font,
-                "The AWESOME Game",
-                new Vector2(descPos.X, descPos.Y - descTexture.Height),
+            _spriteBatch.DrawString(titleFont,
+                "Meatball Mania",
+                new Vector2(descPos.X, descPos.Y - descTexture.Height/3),
                 Color.White,
                 0f,
                 new Vector2(titleSize.X/2,titleSize.Y/2),
+                1f,
+                SpriteEffects.None,
+                0f
+            );
+
+            _spriteBatch.DrawString(descFont,
+                "What's up, check out this cool game",
+                new Vector2(descPos.X, descPos.Y),
+                Color.White,
+                0f,
+                new Vector2(descSize.X/2,descSize.Y/2),
                 1f,
                 SpriteEffects.None,
                 0f
