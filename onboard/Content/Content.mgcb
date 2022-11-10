@@ -505,6 +505,18 @@
 /processorParam:TextureFormat=Color
 /build:BG9.tif
 
+#begin bgsheet.jpg
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:bgsheet.jpg
+
 #begin card.png
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -854,6 +866,18 @@
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:Loading_9.gif
+
+#begin loadingSheet.jpg
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:loadingSheet.jpg
 
 #begin tansparent-logo.png
 /importer:TextureImporter
