@@ -27,6 +27,7 @@ namespace onboard
         private Texture2D cardTexture;
         private Texture2D[] loadingFrames = new Texture2D[25];
         private Texture2D[] BGFrames = new Texture2D[40];
+        private Texture2D loadingSheet;
         private Texture2D titleTexture;
         private Texture2D descriptionTexture;
 
@@ -60,6 +61,7 @@ namespace onboard
             cardTexture = Content.Load<Texture2D>("card");
             titleTexture = Content.Load<Texture2D>("tansparent-logo");
             descriptionTexture = Content.Load<Texture2D>("description");
+            loadingSheet = Content.Load<Texture2D>("loadingSheet"); // THE spritesheet editor compressed the image bruh now the frames aren't the right size
 
             // TODO: use this.Content to load your game content here
             _mainMenu.setGames(_client.ListBucketContentsAsync("devcade-games").Result);
@@ -110,7 +112,7 @@ namespace onboard
 
                 case "loading":
                     // Check for process that matches last launched game and display loading screen if it's running 
-                    //_loading = Util.IsProcessOpen(_mainMenu.gameSelected());
+                    _loading = Util.IsProcessOpen(_mainMenu.gameSelected());
                     
                     if(fadeColor < 1f)
                     {
@@ -147,8 +149,8 @@ namespace onboard
                 case "description":
                     if (myState.IsKeyDown(Keys.Enter) && lastState.IsKeyUp(Keys.Enter))
                     {
-                        //Console.WriteLine("Running game!!!");
-                        //_client.runGame(_mainMenu.gameSelected());
+                        Console.WriteLine("Running game!!!");
+                        _client.runGame(_mainMenu.gameSelected());
                         fadeColor = 0f;
                         _loading = true;
                         state = "loading";

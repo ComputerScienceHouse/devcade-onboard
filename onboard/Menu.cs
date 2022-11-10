@@ -83,7 +83,9 @@ namespace onboard
 
         public void drawBackground(SpriteBatch _spriteBatch, Texture2D[] BGFrames, float col)
         {
-            if(bgFrame > 78)
+            // Current sprite sheet has each frame at 600x1067
+            // SpriteSheet no work :(
+            if(bgFrame > 79)
             {
                 bgFrame = 0;
             }
@@ -94,7 +96,7 @@ namespace onboard
                 null,
                 new Color(col,col,col),
                 0f,
-                new Vector2(BGFrames[bgFrame/2].Width / 2, BGFrames[bgFrame/2].Height / 2),
+                new Vector2(BGFrames[0].Width/2, BGFrames[0].Height/2),
                 1.05f,
                 SpriteEffects.None,
                 0f
@@ -140,11 +142,12 @@ namespace onboard
 
             _spriteBatch.Draw(
                 loadingFrames[loadingFrame/2], // Divide it by two, so that each image remains for 2 frames, to make the animation slower
-                new Rectangle(_sWidth/2, 0, 804, 1920),
+                new Vector2(0, 0),
                 null,
                 new Color(col, col, col),
                 0f,
-                new Vector2(loadingFrames[loadingFrame/2].Width/2, 0),
+                new Vector2(0,0),
+                1f,
                 SpriteEffects.None,
                 0f
             );
