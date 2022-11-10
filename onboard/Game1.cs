@@ -25,8 +25,7 @@ namespace onboard
         KeyboardState lastState;
 
         private Texture2D cardTexture;
-        private Texture2D[] loadingFrames = new Texture2D[25];
-        private Texture2D[] BGFrames = new Texture2D[40];
+        private Texture2D loadingSpin;
         private Texture2D BGgradient;
         private Texture2D icon;
         private Texture2D titleTexture;
@@ -59,29 +58,20 @@ namespace onboard
             _spriteBatch = new SpriteBatch(GraphicsDevice);
             _devcadeMenuBig = Content.Load<SpriteFont>("devcade-menu-big");
             _devcadeMenuTitle = Content.Load<SpriteFont>("devcade-menu-title");
+
             cardTexture = Content.Load<Texture2D>("card");
             titleTexture = Content.Load<Texture2D>("tansparent-logo");
+
             descriptionTexture = Content.Load<Texture2D>("description");
+
             BGgradient = Content.Load<Texture2D>("OnboardBackgroundGradient");
             icon = Content.Load<Texture2D>("CSH");
+
+            loadingSpin = Content.Load<Texture2D>("loadingSheet");
 
             // TODO: use this.Content to load your game content here
             _mainMenu.setGames(_client.ListBucketContentsAsync("devcade-games").Result);
             _mainMenu.setCards();
-
-            // These for loops load each of the frames of both the loading animation and background loop.
-            // TURN THESE INTO SPRITESHEETS
-            for(int i=1; i<26; i++)
-            {
-                string name = "Loading_" + i.ToString();
-                loadingFrames[i-1] = Content.Load<Texture2D>(name);
-            }
-
-            for(int i=1; i<41; i++)
-            {
-                string name = "BG" + i.ToString();
-                BGFrames[i-1] = Content.Load<Texture2D>(name);
-            }
         }
 
         protected override void Update(GameTime gameTime)
@@ -184,7 +174,8 @@ namespace onboard
                     break;
 
                 case "loading":
-                    _mainMenu.drawLoading(_spriteBatch, loadingFrames, fadeColor);
+                    _mainMenu.drawLoading(_spriteBatch, loadingSpin, fadeColor);
+                    _mainMenu.drawTitle(_spriteBatch, titleTexture, fadeColor);
                     break;
                 
                 case "description":
