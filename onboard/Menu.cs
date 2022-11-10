@@ -81,28 +81,30 @@ namespace onboard
             return gameTitles.ElementAt(itemSelected);
         }
 
-        public void drawBackground(SpriteBatch _spriteBatch, Texture2D[] BGFrames, float col)
+        public void drawBackground(SpriteBatch _spriteBatch, Texture2D BGgradient, Texture2D icon, float col)
         {
-            // Current sprite sheet has each frame at 600x1067
-            // SpriteSheet no work :(
-            if(bgFrame > 79)
-            {
-                bgFrame = 0;
-            }
-
             _spriteBatch.Draw(
-                BGFrames[bgFrame/2],
-                new Vector2(_sWidth/2, _sHeight/2),
+                BGgradient,
+                new Vector2(0, 0),
                 null,
                 new Color(col,col,col),
                 0f,
-                new Vector2(BGFrames[0].Width/2, BGFrames[0].Height/2),
-                1.05f,
+                new Vector2(0, 0),
+                1f,
                 SpriteEffects.None,
                 0f
             );
-            
-            bgFrame++;
+            _spriteBatch.Draw(
+                icon,
+                new Vector2(0, 0),
+                null,
+                new Color(col,col,col),
+                0f,
+                new Vector2(0, 0),
+                1f,
+                SpriteEffects.None,
+                0f
+            );
         }
 
         public void drawTitle(SpriteBatch _spriteBatch, Texture2D titleTexture, float col)
