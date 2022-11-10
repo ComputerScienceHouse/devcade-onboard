@@ -24,8 +24,8 @@ namespace onboard
         //private float alpha = 0f;
         //private const float moveSpeed = 255.0f / fadeTime;
 
-        private int loadingFrame = 0;
-        private int bgFrame = 0;
+        private int column = 0;
+        private int row = 0;
 
         private int _sWidth;
         private int _sHeight;
@@ -133,28 +133,38 @@ namespace onboard
             */
         }
 
-        public void drawLoading(SpriteBatch _spriteBatch, Texture2D[] loadingFrames, float col)
-        {
-
-            // Cycles through all the frames of the loading animation. 
-            if(loadingFrame > 48)
+        public void drawLoading(SpriteBatch _spriteBatch, Texture2D loadingSpin, float col)
+        { 
+            if(column > 4)
             {
-                loadingFrame = 0;
+                column = 0;
+                row++;
+                if (row>4){
+                    row = 0;
+                }
             }
 
+            // Creates a boundary to get the right spot on the spritesheet to be drawn
+            Rectangle spriteBounds = new Rectangle(
+                600 * column,
+                600 * row,
+                600,
+                600
+            );
+
             _spriteBatch.Draw(
-                loadingFrames[loadingFrame/2], // Divide it by two, so that each image remains for 2 frames, to make the animation slower
-                new Vector2(0, 0),
-                null,
+                loadingSpin,
+                new Vector2(_sWidth/2, _sHeight/2 + 150),
+                spriteBounds,
                 new Color(col, col, col),
                 0f,
-                new Vector2(0,0),
-                1f,
+                new Vector2(300,300),
+                1.5f,
                 SpriteEffects.None,
                 0f
             );
 
-            loadingFrame++;
+            column++;
             
         }
 
