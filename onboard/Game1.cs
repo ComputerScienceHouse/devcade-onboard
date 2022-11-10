@@ -12,6 +12,7 @@ namespace onboard
         private SpriteBatch _spriteBatch;
 
         private SpriteFont _devcadeMenuBig;
+        private SpriteFont _devcadeMenuTitle;
 
         private Menu _mainMenu;
         private DevcadeClient _client;
@@ -27,7 +28,7 @@ namespace onboard
         private Texture2D[] loadingFrames = new Texture2D[25];
         private Texture2D[] BGFrames = new Texture2D[40];
         private Texture2D titleTexture;
-        private Texture2D backgroundTexure;
+        private Texture2D descriptionTexture;
 
         public Game1()
         {
@@ -55,9 +56,10 @@ namespace onboard
         {
             _spriteBatch = new SpriteBatch(GraphicsDevice);
             _devcadeMenuBig = Content.Load<SpriteFont>("devcade-menu-big");
+            _devcadeMenuTitle = Content.Load<SpriteFont>("devcade-menu-title");
             cardTexture = Content.Load<Texture2D>("card");
             titleTexture = Content.Load<Texture2D>("tansparent-logo");
-            backgroundTexure = Content.Load<Texture2D>("background");
+            descriptionTexture = Content.Load<Texture2D>("description");
 
             // TODO: use this.Content to load your game content here
             _mainMenu.setGames(_client.ListBucketContentsAsync("devcade-games").Result);
@@ -184,7 +186,7 @@ namespace onboard
                 case "description":
                     _mainMenu.drawBackground(_spriteBatch,BGFrames,fadeColor);
                     _mainMenu.drawTitle(_spriteBatch,titleTexture,fadeColor);
-                    _mainMenu.drawDescription(_spriteBatch, cardTexture, _devcadeMenuBig);
+                    _mainMenu.drawDescription(_spriteBatch, descriptionTexture, _devcadeMenuTitle, _devcadeMenuBig);
                     break;
             }
 
