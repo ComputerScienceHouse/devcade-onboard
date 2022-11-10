@@ -27,7 +27,8 @@ namespace onboard
         private Texture2D cardTexture;
         private Texture2D[] loadingFrames = new Texture2D[25];
         private Texture2D[] BGFrames = new Texture2D[40];
-        private Texture2D loadingSheet;
+        private Texture2D BGgradient;
+        private Texture2D icon;
         private Texture2D titleTexture;
         private Texture2D descriptionTexture;
 
@@ -61,7 +62,8 @@ namespace onboard
             cardTexture = Content.Load<Texture2D>("card");
             titleTexture = Content.Load<Texture2D>("tansparent-logo");
             descriptionTexture = Content.Load<Texture2D>("description");
-            loadingSheet = Content.Load<Texture2D>("loadingSheet"); // THE spritesheet editor compressed the image bruh now the frames aren't the right size
+            BGgradient = Content.Load<Texture2D>("OnboardBackgroundGradient");
+            icon = Content.Load<Texture2D>("CSH");
 
             // TODO: use this.Content to load your game content here
             _mainMenu.setGames(_client.ListBucketContentsAsync("devcade-games").Result);
@@ -176,7 +178,7 @@ namespace onboard
             {
                 case "launch":
                 case "input":
-                    _mainMenu.drawBackground(_spriteBatch, BGFrames, fadeColor);
+                    _mainMenu.drawBackground(_spriteBatch, BGgradient, icon, fadeColor);
                     _mainMenu.drawTitle(_spriteBatch, titleTexture, fadeColor);
                     _mainMenu.drawCards(_spriteBatch, cardTexture, _devcadeMenuBig);
                     break;
@@ -186,7 +188,7 @@ namespace onboard
                     break;
                 
                 case "description":
-                    _mainMenu.drawBackground(_spriteBatch,BGFrames,fadeColor);
+                    _mainMenu.drawBackground(_spriteBatch, BGgradient, icon, fadeColor);
                     _mainMenu.drawTitle(_spriteBatch,titleTexture,fadeColor);
                     _mainMenu.drawDescription(_spriteBatch, descriptionTexture, _devcadeMenuTitle, _devcadeMenuBig);
                     break;
