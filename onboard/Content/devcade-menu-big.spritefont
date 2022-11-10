@@ -10,7 +10,6 @@ with.
 
     <!--
     Modify this string to change the font that will be imported.
-    /usr/share/fonts/truetype/liberation/LiberationMono-Bold.ttf
     -->
     <FontName>VT323-Regular.ttf</FontName>
 
