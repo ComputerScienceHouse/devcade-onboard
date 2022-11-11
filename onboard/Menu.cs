@@ -99,7 +99,7 @@ namespace onboard
             // Idea for scrolling icons: This surprisingly worked with no hassle
                 // For row in range (# of rows)
                     // For column in range (# of cols)
-                        // Draw a single icon. The location is based on it's row & column. Both of these values will incremement by 150 
+                        // Draw a single icon. The location is based on it's row & column. Both of these values will incremement by 150 (150 is the size of the icon sprite)
                         // Added to the X and Y values will be it's offset, which is calculated by 150 * time elapsed. Making it move 150 px in one second
                         // Once offset reaches 150, it goes back to zero. 
             
