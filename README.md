@@ -48,7 +48,7 @@ sudo systemctl enable --now xlogin@devcade
 
 _Helpful Tip: Remember to `chmod +x onboard`. You may get weird syntax errors if you don't_
 
-## HACKING
+## Setting up a dev environment
 
 To setup and launch a development environment, you can do the following:
 
@@ -65,7 +65,7 @@ DEVCADE_API_DOMAIN
 ### Building and Launching the Container
 
 ```
-cd HACKING
+cd dev-environment
 ./build-environment.sh
 ./launch-environment.sh
 ```
