@@ -1,20 +1,20 @@
 # Devcade-onboard
 The onboard menu and control software for the Devcade custom arcade system.
 
-## Building
+## Building on a devcade system
 
-Run the `update_onboard.sh` script located in HACKING
+Run the `update_onboard.sh` script located in install
 
 ## Building (manual)
 
-To build and run on the Idiot, do the following from `/onboard`:
+To build and run on the DCU, do the following from `/onboard`:
 ```
 dotnet publish -c Release -r linux-x64 --no-self-contained
 ```
 
-To put it on the Idiot, compress the `publish` folder located at `\Devcade-onboard\onboard\bin\Release\netcoreapp3.1\linux-x64` and `scp` that to the Idiot.
+To put it on the DCU (devcade compute unit), compress the `publish` folder located at `\Devcade-onboard\onboard\bin\Release\netcoreapp3.1\linux-x64` and `scp` that to the DCU.
 
-## The Idiot
+## The Devcade Compute Unit (DCU)
 
 ### Prereqs
 
@@ -22,26 +22,28 @@ Debian >=10
 
 A user named `devcade`
 
-`apt install xterm openbox compton` and friends (I dont actually know what all is installed)
+`apt install xinit xterm git build-essential wget openbox compton pulseaudio x11-xserver-utils`
+
+Also install dotnet-sdk-6.0 which requires adding microsofts package repo.
 
 ### Daemon
 
 _daemons are always watching. They are always with you. So is Willard._
 
-The Devcade Idiot is running Debian 10 with a very _very_ simple Xorg server setup. It has [xlogin](https://github.com/joukewitteveen/xlogin) configured to launch the onboarding program, along with said xorg server, as the `devcade` user.
+The DCU is running Debian 10 with a very _very_ simple Xorg server setup. It has [xlogin](https://github.com/joukewitteveen/xlogin) configured to launch the onboarding program, along with said xorg server, as the `devcade` user.
 
-You can find everything(tm) you need to set up the Devcade Idiot in `/idiot`. This repo has a submodule, `xlogin` that can be cloned down with `git submodule update --init --recursive`.
+You can find everything(tm) you need to set up the DCU in `/install`. This repo has a submodule, `xlogin` that can be cloned down with `git submodule update --init --recursive`.
 
-1. Run the `update_onboard.sh` script in `HACKING/`
+1. Run the `update_onboard.sh` script in `install/`
 
-2. `cp idiot/.xinitrc /home/devcade/`
+2. `cp install/.xinitrc /home/devcade/`
 
-2. `mkdir /home/devcade/.config/openbox && cp idiot/rc.xml /home/devcade/.config/openbox/rc.xml`
+2. `mkdir /home/devcade/.config/openbox && cp install/rc.xml /home/devcade/.config/openbox/rc.xml`
 
 3. To install `xlogin`, do the following
 
 ```
-cd idiot/xlogin
+cd install/xlogin
 sudo make install
 sudo systemctl enable --now xlogin@devcade
 ```
