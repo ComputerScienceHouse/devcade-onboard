@@ -181,8 +181,10 @@ public class Menu : IMenu {
                 // don't download the banner for the default game
                 Client.downloadBanner(game.id);
             } // check if /tmp/ has the banner
+            
+            string devcadePath = Env.get("DEVCADE_PATH").unwrap_or("/home/devcade/.devcade");
 
-            string bannerPath = $"/tmp/devcade/{game.id}/banner.png";
+            string bannerPath = $"{devcadePath}/{game.id}/banner.png";
             if (File.Exists(bannerPath)) {
                 try {
                     Texture2D banner = Texture2D.FromStream(graphics, File.OpenRead(bannerPath));
