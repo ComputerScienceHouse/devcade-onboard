@@ -201,10 +201,14 @@ public class Menu : IMenu {
             cards.Add(game.id, newCard);
 
             // Add the reference to the card to the proper lists within the tag dictionary
-            foreach(devcade.Tag tag in game.tags) {
+            foreach(Tag tag in game.tags) {
+                if (!tagLists.ContainsKey(tag.name)) {
+                    // tag doesn't exist in 'get all tags' (probably no internet)
+                    tagLists[tag.name] = new List<MenuCard>();
+                }
                 tagLists[tag.name].Add(newCard);
-            }  
-
+            }
+            
             tagLists[allTag.name].Add(newCard);
         }
 
