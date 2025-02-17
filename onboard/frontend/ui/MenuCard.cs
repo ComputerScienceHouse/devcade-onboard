@@ -1,4 +1,6 @@
-﻿using Microsoft.Xna.Framework;
+﻿using System;
+
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
 namespace onboard.ui
@@ -13,7 +15,7 @@ namespace onboard.ui
         private Texture2D texture;
 
         public int listPos; // Tracks the card's current position on the screen
-        
+
         // Same as rotation variables, but for scale, color
         private float scale = 1f;
         private const float scale_amt = 0.05f;
@@ -35,7 +37,7 @@ namespace onboard.ui
             this.texture = cardTexture;
             this.game = game;
 
-            while(initialPos > 0)
+            while (initialPos > 0)
             {
                 rotation -= rotation_amt;
                 scale -= scale_amt;
@@ -52,12 +54,13 @@ namespace onboard.ui
 
         }
 
-        public void setListPos(int pos) { 
-            this.listPos = pos; 
+        public void setListPos(int pos)
+        {
+            this.listPos = pos;
             this.rotation = 0f;
             this.scale = 1f;
 
-            while(pos > 0)
+            while (pos > 0)
             {
                 rotation -= rotation_amt;
                 scale -= scale_amt;
@@ -108,18 +111,19 @@ namespace onboard.ui
         {
             _spriteBatch.Draw(
                 texture ?? cardTexture,
-                new Vector2(cardX, (int)(_sHeight / 2.0 + (cardTexture.Height * scalingAmount) /2)),
+                new Vector2(cardX, (int)(_sHeight / 2.0 + (cardTexture.Height * scalingAmount) / 2)),
                 null,
                 new Color(cardOpacity, cardOpacity, cardOpacity, cardOpacity),
                 rotation,
                 new Vector2(0, cardTexture.Height / 2.0f),
-                (float)(scale * scalingAmount), 
+                (float)(scale * scalingAmount),
                 SpriteEffects.None,
-                0f
+                Math.Abs(rotation)
             );
         }
 
-        public void setTexture(Texture2D texture) {
+        public void setTexture(Texture2D texture)
+        {
             this.texture = texture;
         }
     }
