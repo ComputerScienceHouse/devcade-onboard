@@ -36,11 +36,17 @@ mod network {
     use log::{log, Level};
     use serde::Deserialize;
     use std::ops::Deref;
+    use std::time::Duration;
 
     // Construct a static client to be used for all requests. Prevents opening a new connection for
     // every request.
     lazy_static! {
-        static ref CLIENT: reqwest::Client = reqwest::Client::new();
+        //Added timeouts to prevent network requests from hanging indefinitely when offline. TBH TIMEOUTS MAY NOT BE THE RIGHT SOLUTUON BUT IT WORKS
+        static ref CLIENT: reqwest::Client = reqwest::Client::builder()
+            .timeout(Duration::from_secs(30))
+            .connect_timeout(Duration::from_secs(10))
+            .build()
+            .unwrap();
     }
 
     /**
@@ -147,13 +153,22 @@ mod route {
  * # Errors
  * This function will return an error if the request fails, or if the JSON cannot be deserialized
  */
+//Now falls back to  game_list_from_fs() if the API is unreachable.
 pub async fn game_list() -> Result<Vec<DevcadeGame>, Error> {
-    let games: Vec<DevcadeGame> =
-        network::request_json(format!("{}/{}", api_url(), route::game_list()).as_str()).await?;
-    Ok(games
-        .into_iter()
-        .filter(|game| game.hash.is_some())
-        .collect::<Vec<DevcadeGame>>())
+    match network::request_json::<Vec<DevcadeGame>>(
+        format!("{}/{}", api_url(), route::game_list()).as_str(),
+    )
+    .await
+    {
+        Ok(games) => Ok(games
+            .into_iter()
+            .filter(|game| game.hash.is_some())
+            .collect()),
+        Err(err) => {
+            log::warn!("Couldn't fetch game list from API, falling back to filesystem!: {err:?}");
+            game_list_from_fs()
+        }
+    }
 }
 
 /**
@@ -395,15 +410,23 @@ pub async fn download_game(game_id: String) -> Result<DevcadeGame, Error> {
         }
         Err(err) => {
             log::warn!("Couldn't request live info on game! Falling back to local file! {err:?}");
-            local_game
-                .as_ref()
-                .expect("Game not downloaded and we're offline!")
-                .clone()
+            match local_game.as_ref() {
+                Ok(g) => {
+                    if g.flatpak_app_id.is_some() {
+                        log::info!("Offline and game is already installed, skipping download.");
+                        return Ok(g.clone());
+                    }
+                    g.clone()
+                }
+                Err(_) => {
+                    return Err(anyhow!("Game not downloaded and we're offline!"));
+                }
+            }
         }
     };
     // Is the current hash == the remote hash?
     if let Ok(local_game) = local_game {
-        if local_game.hash == game.hash {
+        if local_game.hash == game.hash && local_game.flatpak_app_id.is_some() { // just to be sure sure
             return Ok(local_game);
         }
     }
@@ -526,7 +549,9 @@ pub async fn launch_game(game_id: String) -> Result<(), Error> {
 
     tokio::time::sleep(Duration::from_millis(200)).await;
 
-    kill_game(game).await?;
+    if let Err(e) = kill_game(game).await {
+        log::warn!("kill_game failed (game may have already exited cleanly): {e}"); // not necessary but this fixed exit error for me
+    }
 
     Ok(())
 }

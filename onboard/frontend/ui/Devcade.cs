@@ -381,13 +381,11 @@ public class Devcade : Game {
                     Client.launchGame(
                         menu.gameSelected().id
                     ).ContinueWith(res => {
-                        if (res.IsCompletedSuccessfully) {
-                            state = MenuState.Input;
+                        _loading = false;
+                        if (!res.IsCompletedSuccessfully || res.Result.type == Response.ResponseType.Err) {
+                            logger.Error("Failed to launch game: " + res.Exception?.Message);
                         }
-                        else {
-                            logger.Error("Failed to launch game: " + res.Exception);
-                            state = MenuState.Input;
-                        }
+                        state = MenuState.Input;
                     });
 
                     fadeColor = 0f;

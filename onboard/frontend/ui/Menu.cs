@@ -143,25 +143,31 @@ public class Menu : IMenu {
         cards?.Clear();
         tagLists.Clear();
         itemSelected = 0;
+        currentTag = allTag.name; // reset to default
+        // Re-add the allTag entry immediately
+        tagLists.Add(allTag.name, new List<MenuCard>());
     }
 
     public bool reloadGames(GraphicsDevice device, bool clear = true) {
-        if (clear)
-            clearGames();
-        // Reload the .env file every time the games are reloaded to make sure that the demo mode is up to date
+        if (clear) clearGames();
         Env.load("../.env");
         itemSelected = 0;
-        
         var errorList = new List<DevcadeGame> { defaultGame };
-        
-        setTags();
-        
-        // Public access to state is definitely a good idea (this whole thing needs a refactor)
         Devcade.instance.state = Devcade.MenuState.Loading;
         Devcade.instance._loading = true;
 
-        // gameTask is 'never used' but tasks in C# are eager, so it doesn't need to be awaited to run. 
-        Task gameTask = Client.getGameList()
+        Task gameTask = Client.getTags()
+            .ContinueWith(t => {
+                logger.Info("Getting tags from API");
+                tags = t.Result.into_result<List<devcade.Tag>>().unwrap_or(new List<devcade.Tag>());
+                tags.Insert(0, allTag);
+                if (tagLists.Keys.Count == 0) {
+                    foreach (Tag tag in tags) {
+                        tagLists.Add(tag.name, new List<MenuCard>());
+                    }
+                }
+            })
+            .ContinueWith(_ => Client.getGameList()).Unwrap()
             .ContinueWith(t => {
                 if (!t.IsCompletedSuccessfully) {
                     logger.Error($"Failed to fetch game list: {t.Exception}");
@@ -200,20 +206,12 @@ public class Menu : IMenu {
     }
 
     public void setTags() {
-        if (tags == null || tags.Count == 0) {
-            logger.Info("Getting tags from API (this should be only once, but maybe every reload of the game list?)");
-            tags = Client.getTags().Result.into_result<List<devcade.Tag>>().unwrap_or(new List<devcade.Tag>());
-            tags.Insert(0, allTag); // Make all tag appear at the top of the list
-        }
-
+        if (tags == null)tags =new List<devcade.Tag>{ allTag};
         if (tagLists.Keys.Count != 0) return;
-        
-        // tagLists gets cleared every time the games are reloaded?!
         foreach (Tag tag in tags) {
             tagLists.Add(tag.name, new List<MenuCard>());
         }
     }
-    
     public void setCards(GraphicsDevice graphics) {
         for (int i = 0; i < gameTitles.Count; i++) {
             devcade.DevcadeGame game = gameTitles[i];
@@ -246,9 +244,10 @@ public class Menu : IMenu {
 
             // Add the reference to the card to the proper lists within the tag dictionary
             foreach(devcade.Tag tag in game.tags) {
-                tagLists[tag.name].Add(newCard);
-            }  
-
+                if (tagLists.ContainsKey(tag.name)) {
+                    tagLists[tag.name].Add(newCard);
+                }
+            }
             tagLists[allTag.name].Add(newCard);
         }
         
@@ -279,6 +278,7 @@ public class Menu : IMenu {
     
     // MAKE FONTS, TEXTURES, AND DIMS FIELDS WITHIN TAGS MENU
     public void initializeTagsMenu(Texture2D cardTexture, SpriteFont font) {
+        if (tags == null) tags = new List<devcade.Tag> { allTag }; // just to be sure sure, yk
         tagsMenu = new TagsMenu(tags.ToArray(), cardTexture, font, new Vector2(_sWidth, _sHeight), scalingAmount);
     }
 
@@ -561,7 +561,8 @@ public class Menu : IMenu {
         );
     }
 
-    public void drawCards(SpriteBatch _spriteBatch, Texture2D cardTexture, SpriteFont font) {
+public void drawCards(SpriteBatch _spriteBatch, Texture2D cardTexture, SpriteFont font) {
+        if (!tagLists.ContainsKey(currentTag)) return; //tryna make refresh work 
         // I still have no idea why the layerDepth does not work\
         foreach (MenuCard card in tagLists[currentTag].Where(card => Math.Abs(card.listPos) == 4))
         {
