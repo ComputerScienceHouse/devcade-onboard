@@ -1,0 +1,258 @@
+[gd_scene format=3 uid="uid://bs2l3u3gpwk3a"]
+
+[ext_resource type="Script" uid="uid://bytphx3biwmpk" path="res://GUIs/orignial/OriginalGUI.cs" id="1_eo6uj"]
+[ext_resource type="Texture2D" uid="uid://gsf5hvgxlwu8" path="res://CSHAssets/OnboardBackgroundGradient.png" id="2_4c0jd"]
+[ext_resource type="Texture2D" uid="uid://lqrfprpd7kh3" path="res://CSHAssets/transparent-logo.png" id="2_xc2fw"]
+[ext_resource type="Shader" uid="uid://8uidd8pccdyk" path="res://GUIs/orignial/OriginalBackgrounIconRepeat.gdshader" id="3_1otwf"]
+[ext_resource type="Texture2D" uid="uid://d4nlo4q03fi77" path="res://CSHAssets/CSH.png" id="3_x7jqg"]
+[ext_resource type="FontFile" uid="uid://cnha1ohwbh3ts" path="res://CSHAssets/VT323-Regular.ttf" id="4_mmnpk"]
+[ext_resource type="Texture2D" uid="uid://f61vcor4mcvi" path="res://CSHAssets/description.png" id="5_0ghq1"]
+[ext_resource type="Script" uid="uid://d15s735p2xr6b" path="res://GUIs/orignial/gamesList/GamesContainer.cs" id="7_s6n7q"]
+[ext_resource type="Script" uid="uid://cj0skhgydnii2" path="res://GUIs/orignial/Background.cs" id="8_4asay"]
+[ext_resource type="Script" uid="uid://bjnrrsq5svi0h" path="res://GUIs/orignial/tagList/TagContainer.cs" id="8_loec3"]
+[ext_resource type="Script" uid="uid://62sckdwbwl8r" path="res://GUIs/orignial/DevcadeIcon.cs" id="10_84p7e"]
+[ext_resource type="Script" uid="uid://bnbcabv83bi6o" path="res://GUIs/orignial/SlerpCamera2d.cs" id="10_feq1j"]
+[ext_resource type="Texture2D" uid="uid://bj333tajmq7mt" path="res://CSHAssets/transparent-dev-logo.png" id="11_7qoy5"]
+[ext_resource type="Theme" uid="uid://cfha8h63q5pfc" path="res://GUIs/orignial/tagList/tagButtonTheme.tres" id="12_vs4r3"]
+[ext_resource type="Script" uid="uid://do70tefvxy3xy" path="res://GUIs/orignial/ControlHelpTextTags.cs" id="13_6sm6r"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_loec3"]
+shader = ExtResource("3_1otwf")
+shader_parameter/scale = 7.27
+shader_parameter/direction = Vector2(-0.4, -0.4)
+shader_parameter/alphaScale = 0.72
+
+[node name="Original" type="Control" unique_id=1195079720 node_paths=PackedStringArray("camera", "gameContainer", "tagContainer", "description", "descriptionLabel", "titleLabel", "AuthorLabel")]
+y_sort_enabled = true
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_eo6uj")
+camera = NodePath("SubViewportContainer/SubViewport/Camera2D")
+gameContainer = NodePath("SubViewportContainer/SubViewport/gamesContainer")
+tagContainer = NodePath("SubViewportContainer/SubViewport/ScrollContainer/tagContainer")
+description = NodePath("SubViewportContainer/SubViewport/DescriptionContainer")
+descriptionLabel = NodePath("SubViewportContainer/SubViewport/DescriptionContainer/TextureRect2/MarginContainer/VBoxContainer/description")
+titleLabel = NodePath("SubViewportContainer/SubViewport/DescriptionContainer/TextureRect2/MarginContainer/VBoxContainer/title")
+AuthorLabel = NodePath("SubViewportContainer/SubViewport/DescriptionContainer/TextureRect2/MarginContainer/VBoxContainer/Author")
+secBeforeInputEcho = 0.3
+
+[node name="SubViewportContainer" type="SubViewportContainer" parent="." unique_id=713276628]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+stretch = true
+
+[node name="SubViewport" type="SubViewport" parent="SubViewportContainer" unique_id=617728635]
+handle_input_locally = false
+canvas_item_default_texture_filter = 0
+size = Vector2i(2160, 3840)
+render_target_update_mode = 4
+
+[node name="DescriptionContainer" type="MarginContainer" parent="SubViewportContainer/SubViewport" unique_id=1243988512]
+visible = false
+z_as_relative = false
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 400
+theme_override_constants/margin_top = 300
+theme_override_constants/margin_right = 400
+theme_override_constants/margin_bottom = 300
+
+[node name="TextureRect2" type="TextureRect" parent="SubViewportContainer/SubViewport/DescriptionContainer" unique_id=1414524657]
+z_index = 3000
+z_as_relative = false
+y_sort_enabled = true
+layout_mode = 2
+texture = ExtResource("5_0ghq1")
+expand_mode = 1
+
+[node name="MarginContainer" type="MarginContainer" parent="SubViewportContainer/SubViewport/DescriptionContainer/TextureRect2" unique_id=975672172]
+z_index = 200
+y_sort_enabled = true
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 45
+theme_override_constants/margin_top = 25
+theme_override_constants/margin_right = 45
+theme_override_constants/margin_bottom = 25
+
+[node name="VBoxContainer" type="VBoxContainer" parent="SubViewportContainer/SubViewport/DescriptionContainer/TextureRect2/MarginContainer" unique_id=328930581]
+z_index = 200
+y_sort_enabled = true
+layout_mode = 2
+theme_override_constants/separation = 50
+
+[node name="title" type="Label" parent="SubViewportContainer/SubViewport/DescriptionContainer/TextureRect2/MarginContainer/VBoxContainer" unique_id=1069058341]
+z_index = 200
+y_sort_enabled = true
+layout_mode = 2
+theme_override_fonts/font = ExtResource("4_mmnpk")
+theme_override_font_sizes/font_size = 180
+text = "Title"
+horizontal_alignment = 1
+autowrap_mode = 3
+
+[node name="description" type="Label" parent="SubViewportContainer/SubViewport/DescriptionContainer/TextureRect2/MarginContainer/VBoxContainer" unique_id=151021099]
+z_index = 3000
+z_as_relative = false
+y_sort_enabled = true
+layout_mode = 2
+size_flags_vertical = 2
+theme_override_fonts/font = ExtResource("4_mmnpk")
+theme_override_font_sizes/font_size = 80
+text = "Description"
+autowrap_mode = 2
+
+[node name="Author" type="Label" parent="SubViewportContainer/SubViewport/DescriptionContainer/TextureRect2/MarginContainer/VBoxContainer" unique_id=1859417603]
+layout_mode = 2
+size_flags_vertical = 8
+theme_override_fonts/font = ExtResource("4_mmnpk")
+theme_override_font_sizes/font_size = 80
+text = "Author"
+horizontal_alignment = 1
+
+[node name="Camera2D" type="Camera2D" parent="SubViewportContainer/SubViewport" unique_id=374544719]
+y_sort_enabled = true
+anchor_mode = 0
+script = ExtResource("10_feq1j")
+easeAmount = 2.0
+animationSpeed = 5.0
+
+[node name="background" type="TextureRect" parent="SubViewportContainer/SubViewport/Camera2D" unique_id=1714439144 node_paths=PackedStringArray("camera")]
+z_index = -4096
+y_sort_enabled = true
+custom_minimum_size = Vector2(900, 0)
+offset_right = 2169.0
+offset_bottom = 3842.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+texture = ExtResource("2_4c0jd")
+expand_mode = 1
+script = ExtResource("8_4asay")
+camera = NodePath("..")
+
+[node name="backgroundCSHIcons" type="TextureRect" parent="SubViewportContainer/SubViewport/Camera2D/background" unique_id=1685999065]
+y_sort_enabled = true
+texture_filter = 1
+texture_repeat = 2
+material = SubResource("ShaderMaterial_loec3")
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("3_x7jqg")
+expand_mode = 1
+stretch_mode = 1
+
+[node name="gamesMenu" type="VBoxContainer" parent="SubViewportContainer/SubViewport/Camera2D/background" unique_id=1960973158]
+y_sort_enabled = true
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="SubViewportContainer/SubViewport/Camera2D/background/gamesMenu" unique_id=355430915]
+y_sort_enabled = true
+layout_mode = 2
+theme_override_constants/margin_left = 300
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 300
+theme_override_constants/margin_bottom = 10
+
+[node name="DevcadeIcon" type="TextureRect" parent="SubViewportContainer/SubViewport/Camera2D/background/gamesMenu/MarginContainer" unique_id=995176626]
+y_sort_enabled = true
+layout_mode = 2
+texture = ExtResource("2_xc2fw")
+expand_mode = 5
+script = ExtResource("10_84p7e")
+prodTexture = ExtResource("2_xc2fw")
+devTexture = ExtResource("11_7qoy5")
+
+[node name="ScrollContainer" type="ScrollContainer" parent="SubViewportContainer/SubViewport" unique_id=1424407704]
+y_sort_enabled = true
+anchors_preset = -1
+anchor_left = 1.0
+anchor_right = 2.0
+anchor_bottom = 1.0
+offset_top = 1548.0
+offset_bottom = -2.0
+grow_horizontal = 0
+grow_vertical = 2
+
+[node name="tagContainer" type="GridContainer" parent="SubViewportContainer/SubViewport/ScrollContainer" unique_id=2083496036]
+y_sort_enabled = true
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+columns = 2
+script = ExtResource("8_loec3")
+tagButtonTheme = ExtResource("12_vs4r3")
+
+[node name="gamesContainer" type="Control" parent="SubViewportContainer/SubViewport" unique_id=425249612]
+y_sort_enabled = true
+layout_mode = 3
+anchors_preset = 0
+offset_top = 2268.0
+offset_right = 2159.0
+offset_bottom = 3855.0
+size_flags_vertical = 3
+script = ExtResource("7_s6n7q")
+gameButtonsScale = 1.8
+percentYPositionValue = 60.0
+
+[node name="CenterContainer" type="CenterContainer" parent="SubViewportContainer/SubViewport" unique_id=588526480]
+y_sort_enabled = true
+offset_top = 800.0
+offset_right = 2100.0
+offset_bottom = 1089.0
+
+[node name="controlHelpTextGames" type="Label" parent="SubViewportContainer/SubViewport/CenterContainer" unique_id=190039017]
+z_index = 100
+z_as_relative = false
+y_sort_enabled = true
+custom_minimum_size = Vector2(2100, 0)
+layout_mode = 2
+theme_override_fonts/font = ExtResource("4_mmnpk")
+theme_override_font_sizes/font_size = 142
+text = "Press the Red Button to play! 
+Press both black buttons to refresh"
+horizontal_alignment = 1
+autowrap_mode = 2
+
+[node name="CenterContainer2" type="CenterContainer" parent="SubViewportContainer/SubViewport" unique_id=443979358]
+y_sort_enabled = true
+offset_left = 2160.0
+offset_top = 800.0
+offset_right = 4260.0
+offset_bottom = 943.0
+
+[node name="controlHelpTextTags" type="Label" parent="SubViewportContainer/SubViewport/CenterContainer2" unique_id=951840258 node_paths=PackedStringArray("tagContainer")]
+y_sort_enabled = true
+custom_minimum_size = Vector2(2100, 10.875)
+layout_mode = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_fonts/font = ExtResource("4_mmnpk")
+theme_override_font_sizes/font_size = 142
+text = "Select A Tag to Search:"
+horizontal_alignment = 1
+autowrap_mode = 2
+script = ExtResource("13_6sm6r")
+tagContainer = NodePath("../../ScrollContainer/tagContainer")
